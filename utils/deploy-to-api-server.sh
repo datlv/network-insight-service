@@ -50,4 +50,4 @@ for subdir in `ls ${SOURCE_CODE_ROOT_DIR}/`; do
 done
 echo "done..."
 
-# To run: cd ~/Working/Deevo/src/supply-chain-service && sudo ./deploy-to-api-server.sh -a 18.136.205.13 -k ~/Working/Deevo/pem/dev-full-rights.pem -d "node_modules" -s ~/Working/Deevo/src/supply-chain-service -t /home/ubuntu/supplychain-service
+# To run: cd ~/Working/Deevo/src/network-status-service && sudo ./deploy-to-api-server.sh -a 18.136.205.13 -k ~/Working/Deevo/pem/dev-full-rights.pem -d "node_modules" -s ~/Working/Deevo/src/network-status-service -t /home/ubuntu/supplychain-service
