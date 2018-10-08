@@ -1,0 +1,328 @@
+{
+	"traceables": [
+		{ 
+			"objectType" : "org",
+			"parent" : "00000000",
+			"id": "a5709ad3-Company AAAAA",
+			"name": "Company AAAAA",
+			"content": "Content of Company AAAAA" 
+		},
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "98eb0547-Grower AAAAA",
+				"name": "Grower AAAAA",
+				"content": { 
+                    "role" : "Grower"
+                }				
+			},
+
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "01bbaf1a-Logistic Provider BBBBB",
+				"name": "Logistic Provider BBBBB",
+				"content": { 
+                    "role" : "Logistic Provider"
+                }
+			},
+			
+            {
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "c8320ef1-Raw Material Producer CCCCC",
+				"name": "Raw Material Producer CCCCC",
+				"content": { 
+                    "role" : "Raw Material Producer"
+                }				
+			},
+			
+            {
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "d87f460b-Farmer DDDDD",
+				"name": "Farmer DDDDD",
+				"content": { 
+                    "role" : "Farmer"
+                }				
+			},
+				{
+					"objectType" : "location",
+					"parent": "d87f460b-Farmer DDDDD",
+					"id": "0692d81c-Zone AAAAA",
+					"name": "Zone AAAAA",
+					"content": "content of Zone AAAAA"					
+				},
+					{
+						"objectType" : "product",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "94ccaa26-Tree AAAAA",
+						"name": "Tree AAAAA",
+						"content": "content of Tree AAAAA"						
+					},
+					{
+						"objectType" : "product",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "48310142-Fresh Fruit BBBBB",
+						"name": "Fresh Fruit BBBBB",
+						"content": "content of Fresh Fruit BBBBB"						
+					},
+					{
+						"objectType" : "product",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "618380f2-Dried Fruit CCCCC",
+						"name": "Dried Fruit CCCCC",
+						"content": "content of Dried Fruit CCCCC"						
+					},
+					{
+						"objectType" : "product",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "f4b2747a-Dried Fruit DDDDD",
+						"name": "Dried Fruit DDDDD",
+						"content": "content of Dried Fruit DDDDD"						
+					},
+					{
+						"objectType" : "asset",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "32c87f9d-Device AAAAA",
+						"name": "Device AAAAA",
+						"content": {
+							"trusted-device" : "false"
+						}						
+					},
+					{
+						"objectType" : "asset",
+						"parent": "0692d81c-Zone AAAAA",
+						"id": "70ae0559-Trusted IoT Device BBBBB",
+						"name": "Trusted IoT Device BBBBB",
+						"content": {
+							"trusted-device" : "true"
+						}						
+					},
+				{
+					"objectType" : "location",
+					"parent": "d87f460b-Farmer DDDDD",
+					"id": "d5d13899-Zone BBBBB",
+					"name": "Zone BBBBB",
+					"content": "content of Zone BBBBB"					
+				},
+					{
+						"objectType" : "product",
+						"parent": "d5d13899-Zone BBBBB",
+						"id": "c9c21254-Dried Fruit EEEEE",
+						"name": "Dried Fruit EEEEE",
+						"content": "content of Dried Fruit EEEEE"						
+					},
+					{
+						"objectType" : "asset",
+						"parent": "d5d13899-Zone BBBBB",
+						"id": "3a281296-Trusted IoT Device CCCCC",
+						"name": "Trusted IoT Device CCCCC",
+						"content": {
+							"trusted-device" : "true"
+						}						
+					},
+
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "6393b5cf-Manufacturer EEEEE",
+				"name": "Manufacturer EEEEE",
+				"content": { 
+					"role" : "Manufacturer"
+				}				
+			},
+				{
+					"objectType" : "location",
+					"parent": "6393b5cf-Manufacturer EEEEE",
+					"id": "6c565268-Zone CCCCC",
+					"name": "Zone CCCCC",
+					"content": "content of Zone CCCCC"					
+				},
+					{
+						"objectType" : "asset",
+						"parent": "6c565268-Zone CCCCC",
+						"id": "5e015c90-Trusted IoT Device DDDDD",
+						"name": "Trusted IoT Device DDDDD",
+						"content": {
+							"trusted-device" :"true"
+						}						
+					},
+				{
+					"objectType" : "location",
+					"parent": "6393b5cf-Manufacturer EEEEE",
+					"id": "2babaef4-Zone DDDDD",
+					"name": "Zone DDDDD",
+					"content": "content of Zone DDDDD"					
+				},
+					{
+						"objectType" : "asset",
+						"parent": "2babaef4-Zone DDDDD",
+						"id": "93fa53b9-Trusted IoT Device EEEEE",
+						"name": "Trusted IoT Device EEEEE",
+						"content": {
+							"trusted-device" :"true"
+						}						
+					},
+				{
+					"objectType" : "location",
+					"parent": "6393b5cf-Manufacturer EEEEE",
+					"id": "d751bd9d-Zone EEEEE",
+					"name": "Zone EEEEE",
+					"content": "content of Zone EEEEE"					
+				},
+					{
+						"objectType" : "product",
+						"parent": "d751bd9d-Zone EEEEE",
+						"id": "6f0b28e6-Intermediate Fruit FFFFF",
+						"name": "Intermediate Fruit FFFFF"	
+					},
+					{
+						"objectType" : "product",
+						"parent": "d751bd9d-Zone EEEEE",
+						"id": "6ffc8bd8-Intermediate Fruit GGGGG",
+						"name": "Intermediate Fruit GGGGG"	
+					},
+					{
+						"objectType" : "product",
+						"parent": "d751bd9d-Zone EEEEE",
+						"id": "71c14d13-Bag Fruit HHHHH",
+						"name": "Bag Fruit HHHHH"	
+					},
+					{
+						"objectType" : "asset",
+						"parent": "d751bd9d-Zone EEEEE",
+						"id": "1409dc5d-Trusted IoT Device FFFFF",
+						"name": "Trusted IoT Device FFFFF",
+						"content": {
+							"trusted-device":"true"
+						}	
+					},
+				{
+					"objectType" : "location",
+					"parent": "6393b5cf-Manufacturer EEEEE",
+					"id": "61aaa426-Zone FFFFF",
+					"name": "Zone FFFFF",
+					"content": "content of Zone FFFFF"					
+				},
+					{
+						"objectType" : "product",
+						"parent": "61aaa426-Zone FFFFF",
+						"id": "723ae1a6-Box Fruit JJJJJ",
+						"name": "Box Fruit JJJJJ"	
+					},
+					{
+						"objectType" : "asset",
+						"parent": "61aaa426-Zone FFFFF",
+						"id": "d4fb632d-Trusted IoT Device GGGGG",
+						"name": "Trusted IoT Device GGGGG",
+						"content":{
+							"trusted-device":"true"	
+						}
+					},
+
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "5a8bcd48-Warehouse FFFFF",
+				"name": "Warehouse FFFFF",
+				"content": { 
+					"role" : "Warehouse"
+				}				
+			},
+				{
+					"objectType" : "location",
+					"parent": "5a8bcd48-Warehouse FFFFF",
+					"id": "2b618d9e-Zone GGGGG",
+					"name": "Zone GGGGG",
+					"content": "content of Zone GGGGG"					
+				},
+					{
+						"objectType" : "asset",
+						"parent": "2b618d9e-Zone GGGGG",
+						"id": "88e1d524-Trusted IoT Device HHHHH",
+						"name": "Trusted IoT Device HHHHH",
+						"content": {
+							"trusted-device" :"true"
+						}						
+					},
+					
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "c83f10bb-Retailer GGGGG",
+				"name": "Retailer GGGGG",
+				"content": { 
+					"role" : "Retailer"
+				}				
+			},
+				{
+					"objectType" : "location",
+					"parent": "c83f10bb-Retailer GGGGG",
+					"id": "2d59b36a-Zone HHHHH",
+					"name": "Zone HHHHH",
+					"content": "content of Zone HHHHH"					
+				},
+					{
+						"objectType" : "asset",
+						"parent": "2d59b36a-Zone HHHHH",
+						"id": "dcc3f1f3-Trusted IoT Device JJJJJ",
+						"name": "Trusted IoT Device JJJJJ",
+						"content": {
+							"trusted-device" :"true"
+						}						
+					},
+			{
+				"objectType" : "party",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "f6346426-Food Service Operator HHHHH",
+				"name": "Food Service Operator HHHHH",
+				"content": { 
+					"role" : "Food Service Operator"
+				}				
+			},
+				{
+					"objectType" : "location",
+					"parent": "f6346426-Food Service Operator HHHHH",
+					"id": "dcab461b-Zone JJJJJ",
+					"name": "Zone JJJJJ",
+					"content": "content of Zone JJJJJ"					
+				},
+					{
+						"objectType" : "product",
+						"parent": "dcab461b-Zone JJJJJ",
+						"id": "be6cd29f-Food Fruit KKKKK",
+						"name": "Food Fruit KKKKK"
+					},
+					{
+						"objectType" : "asset",
+						"parent": "dcab461b-Zone JJJJJ",
+						"id": "d4c75862-Trusted IoT Device KKKKK",
+						"name": "Trusted IoT Device KKKKK",
+						"content": {
+							"trusted-device" :"true"
+						}						
+					},
+			{
+				"objectType" : "supplychain",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "c7701362-Supply Chain FOOD BBBBB",
+				"name": "Supply Chain FOOD BBBBB"
+			},
+			{
+				"objectType" : "supplychain",
+				"parent": "a5709ad3-Company AAAAA",
+				"id": "82d3af4f-Supply Chain FOOD JJJJJ",
+				"name": "Supply Chain FOOD JJJJJ"
+			}
+	
+	], 
+	"auditors" : [
+		{
+			"objectType" : "auditor",
+			"id": "1d81a74b-Auditor KKKKK",
+			"name": "Auditor KKKKK",
+			"content": "Auditor KKKKK's content"
+		}
+	]
+}
