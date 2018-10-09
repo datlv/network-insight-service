@@ -1,7 +1,7 @@
-# network-status-service
+# network-insight-service
 # To start app:
 1. clone this repo from github
-2. cd to network-status-service
+2. cd to network-insight-service
 3. run: npm install
 4. run: utils/get-remote-config.sh with appropriate parameters
 5. run: node utils/enrollAdmin.js
