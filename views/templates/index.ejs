@@ -40,6 +40,7 @@
 
 </div>
 <!-- /#page-wrapper -->
+
 <script>
     $(document).ready(function () {
         getChannels();
@@ -57,8 +58,8 @@
                         <td>${index + 1}</td>
                         <td>${id}</td>
                         <td>
-                            <button type='button' class='btn btn-default'>View detail</button>
-                            <button type='button' class='btn btn-default'>View transactions</button>
+                            <a href='/channel-info/${id}' type='button' class='btn btn-default'>View detail</button>
+                            <a href='#' type='button' class='btn btn-default'>View transactions</button>
                         </td>
                         </tr>`;
                     tb.append(html);

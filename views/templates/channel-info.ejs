@@ -1,0 +1,124 @@
+<%layout('../layout')%>
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Channel
+                <%=channelID%>
+            </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Channel Information</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tbody id="info">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>View Block</label>
+                        <select id="select-block-number" class="form-control">
+                            <option disabled selected value> -- select a number -- </option>
+                        </select>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tbody id="block-info">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+</div>
+<!-- /#page-wrapper -->
+
+<script>
+    $(document).ready(function () {
+        getChannelInfo();
+        $('#select-block-number').on('change', function () {
+            getBlockInfo(this.value);
+        });
+    });
+
+    function getBlockInfo(num) {
+        $.get(`/api/v1/insight/org/org1/channel/<%=channelID%>/block/${num}`,
+            {},
+            function (result) {
+                var info = $('#block-info');
+                info.html("");
+                info.append(`<tr>
+                        <th>Data Hash</th>
+                        <td>${result.header.data_hash}</td>
+                        </tr>`);
+                info.append(`<tr>
+                        <th>Previous Block Hash</th>
+                        <td>${result.header.previous_hash}</td>
+                        </tr>`);
+
+                var i;
+                for (i = 0; i < result.data.data.length; i++) {
+                    let data = result.data.data[i];
+                    let time = data.payload.header.channel_header.timestamp;
+                    let txID = data.payload.header.channel_header.tx_id;
+                    info.append(`<tr>
+                        <th>Transaction ${i + 1}</th>
+                        <td>
+                            <div>${time}</div>
+                            <div>${txID}</div>
+                        </td>
+                        </tr>`);
+                }
+            })
+    }
+
+    function getChannelInfo() {
+        $.get(`/api/v1/insight/org/org1/channel/<%=channelID%>`,
+            {},
+            function (result) {
+                var info = $('#info');
+                info.html("");
+                info.append(`<tr>
+                        <th>Block count</th>
+                        <td>${result.count}</td>
+                        </tr>`);
+                info.append(`<tr>
+                        <th>Current Block Hash</th>
+                        <td>${result.currentBlockHash}</td>
+                        </tr>`);
+                info.append(`<tr>
+                        <th>Previous Block Hash</th>
+                        <td>${result.previousBlockHash}</td>
+                        </tr>`);
+
+                var select = $('#select-block-number');
+                select.html("");
+                select.append(`<option disabled selected value> -- select a number -- </option>`);
+                var i;
+                for (i = 0; i < result.count; i++) {
+                    select.append(`<option>${i + 1}</option>`);
+                }
+            })
+    }
+</script>

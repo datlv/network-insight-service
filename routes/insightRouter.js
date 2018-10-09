@@ -68,7 +68,13 @@ router.route('/org/:org/channel/:channel_name')
             .then((channel) => {
                 return channel.queryInfo()
                     .then(queryResponses => {
-                        return res.json(queryResponses);
+
+                        let jsonResponse = {
+                            count: queryResponses.height.low,
+                            currentBlockHash: queryResponses.currentBlockHash.toString('hex'),
+                            previousBlockHash: queryResponses.previousBlockHash.toString('hex')
+                        }
+                        return res.json(jsonResponse);
                     }).catch(err => {
                         if (err) return next(err);
                     });
@@ -124,7 +130,7 @@ router.route('/org/:org/channel/:channel_name/tx/:transaction_id')
             });
     });
 
-    router.route('/org/:org/channel/:channel_name/orderers')
+router.route('/org/:org/channel/:channel_name/orderers')
     .get(function (req, res, next) {
         let org = req.params.org;
         let channel_name = req.params.channel_name;
@@ -140,7 +146,7 @@ router.route('/org/:org/channel/:channel_name/tx/:transaction_id')
             });
     });
 
-    router.route('/org/:org/channel/:channel_name/peers')
+router.route('/org/:org/channel/:channel_name/peers')
     .get(function (req, res, next) {
         let org = req.params.org;
         let channel_name = req.params.channel_name;
