@@ -55,12 +55,58 @@ router.route('/:org')
             .encroll(org)
             .then(() => {
                 let peers = client.getPeersForOrg();
-                client.queryChannels(peers[0]).then(channelQueryResponses => {
-                    res.json(channelQueryResponses);
+                return client.queryChannels(peers[0])
+                .then(channelQueryResponses => {
+                    return res.json(channelQueryResponses);
                 }).catch(err => {
                     if (err) return next(err);
                 });
             })
+    });
+
+router.route('/:org/info/:channel_name')
+    .get(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        return currentClient
+            .encroll(org)
+            .then(() => {
+                return client.getChannel(channel_name);
+            })
+            .then((channel) => {
+                return channel.queryInfo()
+                .then(queryResponses => {
+                    return res.json(queryResponses);
+                }).catch(err => {
+                    if (err) return next(err);
+                });
+            })
+            .catch(err => {
+                if (err) return next(err);
+            });
+    });
+
+router.route('/:org/c/:channel_name/block/:block')
+    .get(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        let block = parseInt(req.params.block);
+        return currentClient
+            .encroll(org)
+            .then(() => {
+                return client.getChannel(channel_name);
+            })
+            .then((channel) => {
+                return channel.queryBlock(block)
+                .then(queryResponses => {
+                    return res.json(queryResponses);
+                }).catch(err => {
+                    if (err) return next(err);
+                });
+            })
+            .catch(err => {
+                if (err) return next(err);
+            });
     });
 
 module.exports = router;
