@@ -123,6 +123,38 @@ router.route('/org/:org/channel/:channel_name/tx/:transaction_id')
                 if (err) return next(err);
             });
     });
+
+    router.route('/org/:org/channel/:channel_name/orderers')
+    .get(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        return encroll(org)
+            .then(() => {
+                return client.getChannel(channel_name);
+            })
+            .then((channel) => {
+                return res.json(channel.getOrderers());
+            })
+            .catch(err => {
+                if (err) return next(err);
+            });
+    });
+
+    router.route('/org/:org/channel/:channel_name/peers')
+    .get(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        return encroll(org)
+            .then(() => {
+                return client.getChannel(channel_name);
+            })
+            .then((channel) => {
+                return res.json(channel.getPeers());
+            })
+            .catch(err => {
+                if (err) return next(err);
+            });
+    });
 // ======================================================
 
 module.exports = router;
