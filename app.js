@@ -13,7 +13,7 @@ var app = express();
 
 // A list of routers
 var routes = require('./routes/index');
-var channelRouter = require('./routes/channelRouter');
+var insightRouter = require('./routes/insightRouter');
 // var auditorRouter = require('./routes/auditorRouter');
 // var orgRouter = require('./routes/orgRouter');
 // var partyRouter = require('./routes/partyRouter');
@@ -40,7 +40,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/api/' + apiVersion + '/channel', channelRouter);
+app.use('/api/' + apiVersion + '/insight', insightRouter);
 // app.use('/api/' + apiVersion + '/auditors', auditorRouter);
 // app.use('/api/' + apiVersion + '/orgs', orgRouter);
 // app.use('/api/' + apiVersion + '/parties', partyRouter);
