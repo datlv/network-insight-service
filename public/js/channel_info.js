@@ -78,8 +78,8 @@ function createTransactionHTML(transaction, index) {
         tbAction += `<tr><th>Creator</th><td>${action.creator.name}</td></tr>`;
         tbAction += `<tr><th>Creator Certificate</th><td>${action.creator.cert}</td></tr>`;
         tbAction += `<tr><th>Chaincode Name</th><td>${action.chaincode}</td></tr>`;
-        tbAction += `<tr><th>Chaincode Version</th><td>${action.chaincode_input}</td></tr>`;
-        tbAction += `<tr><th>Chaincode Input</th><td>${action.chaincode_version}</td></tr>`;
+        tbAction += `<tr><th>Chaincode Version</th><td>${action.chaincode_version}</td></tr>`;
+        tbAction += `<tr><th>Chaincode Input</th><td>${action.chaincode_input}</td></tr>`;
         tbAction += `<tr><th>Endorsers</th><td>${action.endorsers}</td></tr>`;
         tbAction += `<tr><th>Proposal Response Status</th><td>${action.proposal_response.status}</td></tr>`;
         tbAction += `<tr><th>Read-Write Sets</th><td><pre style="max-width:600px">${JSON.stringify(action.proposal_response.rw_set, null, 2)}</pre></td></tr>`;
