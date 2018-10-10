@@ -26,7 +26,7 @@ function convertTransactionAction2JSON(action) {
     }
 }
 
-function convertTransaction2JSON(transaction) {
+function convertBlockTransaction2JSON(transaction) {
     var actions = []
     if (transaction.payload.data.actions !== undefined) {
         actions = transaction.payload.data.actions.map(convertTransactionAction2JSON);
@@ -47,7 +47,7 @@ function convertBlock2JSON(block) {
         previous_hash: block.header.previous_hash,
         data_hash: block.header.data_hash
     }
-    let transactions = block.data.data.map(convertTransaction2JSON);
+    let transactions = block.data.data.map(convertBlockTransaction2JSON);
 
     return {
         header: header,
@@ -56,3 +56,39 @@ function convertBlock2JSON(block) {
 }
 
 module.exports.convertBlock2JSON = convertBlock2JSON;
+
+function convertTransaction2JSON(transaction) {
+    let payload = transaction.transactionEnvelope.payload;
+    let header = payload.header;
+    var actions = []
+    if (payload.data.actions !== undefined) {
+        actions = payload.data.actions.map(convertTransactionAction2JSON);
+    }
+    return {
+        type: header.channel_header.typeString,
+        time: header.channel_header.timestamp,
+        tx_id: header.channel_header.tx_id,
+        creator: header.signature_header.creator.Mspid,
+        channel: header.channel_header.channel_id,
+        actions: actions
+    }
+}
+
+module.exports.convertTransaction2JSON = convertTransaction2JSON;
+
+function convertChaincode2JSON(chaincode) {
+    return {
+        name: chaincode.name,
+        version: chaincode.version,
+    }
+}
+
+function convertChaincodeArray2JSON(chaincodes) {
+    var result = []
+    if (chaincodes.chaincodes !== undefined) {
+        result = chaincodes.chaincodes.map(convertChaincode2JSON);
+    }
+    return result
+}
+
+module.exports.convertChaincodeArray2JSON = convertChaincodeArray2JSON;
