@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 usage() {
-	echo "Usage: $0 [-d <service_path>] -t [tmp_path] -p [ip host] -k [key_path] -g [list_of_orgs]" 1>&2
+	echo "Usage: $0 [-d <service_path>] -t [tmp_path] -p [ip host] -k [key_path] -g [list_of_orgs] -c [list_of_channels]" 1>&2
 	exit 1
 }
-while getopts ":d:t:p:k:g:" o; do
+while getopts ":d:t:p:k:g:c:" o; do
 	case "${o}" in
 	d)
 		d=${OPTARG}
@@ -21,13 +21,16 @@ while getopts ":d:t:p:k:g:" o; do
 	g)
 		g=${OPTARG}
 		;;
+	c)
+		c=${OPTARG}
+		;;
 	*)
 		usage
 		;;
 	esac
 done
 shift $((OPTIND - 1))
-if [ -z "${d}" ] || [ -z "${t}" ] || [ -z "${p}" ] || [ -z "${k}" ] || [ -z "${g}" ]; then
+if [ -z "${d}" ] || [ -z "${t}" ] || [ -z "${p}" ] || [ -z "${k}" ] || [ -z "${g}" ] || [ -z "${c}" ]; then
 	usage
 fi
 IP=${p}
@@ -97,22 +100,27 @@ done
 echo 'name: "Deevo network"
 version: "1.0"
 # Optinal. But most app would have this so that channle objects can be constructed based on this section.
-channels:
-  mychannel: # name of channel
+channels:' >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
+
+for channel in $c; do
+	echo "
+  ${channel}: # name of channel
     orderers:
       - orderer0.org0.deevo.com
-    peers:
-' >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
-for org in $ORGS; do
-	if [ "${org}" != "org0" ]; then
-		echo "      peer0.${org}.deevo.com:
+    peers:" >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
+	for org in $ORGS; do
+		if [ "${org}" != "org0" ]; then
+			echo "      peer0.${org}.deevo.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true" >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
-	fi
+		fi
+	done
 done
-echo "organizations:" >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
+
+echo "
+organizations:" >>${CONFIG_PATH}/fabric-network-config/connection-profile.yaml
 for org in $ORGS; do
 	echo "  ${org}:
     mspid: ${org}MSP
