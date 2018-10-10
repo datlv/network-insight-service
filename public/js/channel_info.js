@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    hideSearchError();
     getChannelInfo();
     $('#select-block-number').on('change', function () {
         getBlockInfo(this.value);
@@ -10,6 +11,56 @@ $(document).ready(function () {
         searchTypeChanged(this.value);
     });
 });
+
+function showSearchError(e) {
+    let info = $('#error-div');
+    info.html('');
+
+    const messageRe = /(message:.*\)<)/;
+    var message = '';
+    if (messageRe.test(e.responseText)) {
+        let m = e.responseText.match(messageRe);
+        if (m.length > 0) {
+            message = m[0].split(")<")[0];
+            message = message.split("message:")[1];
+            info.append(`<strong>${message}</strong>`);
+        }
+    }
+    if (message === '') {
+        info.append(e.responseText);
+    }
+    info.show();
+}
+
+function hideSearchError() {
+    $('#error-div').html('');
+    $('#error-div').hide();
+}
+
+function showChannelError(e) {
+    let info = $('#error-channel-div');
+    info.html('');
+
+    const messageRe = /(<h1>(.|\n)*?<\/h1>)/;
+    var message = '';
+    if (messageRe.test(e.responseText)) {
+        let m = e.responseText.match(messageRe);
+        if (m.length > 0) {
+            message = m[0].split("</h1>")[0];
+            message = message.split("<h1>")[1];
+            info.append(`<strong>${message}</strong>`);
+        }
+    }
+    if (message === '') {
+        info.append(e.responseText);
+    }
+    info.show();
+}
+
+function hideChannelError() {
+    $('#error-channel-div').html('');
+    $('#error-channel-div').hide();
+}
 
 function createTransactionHTML(transaction, index) {
     var tb = ``;
@@ -65,6 +116,8 @@ function getBlockInfo(num) {
 }
 
 function getTransaction(id) {
+    hideSearchError();
+
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/tx/${id}`,
         {},
         function (result) {
@@ -73,9 +126,14 @@ function getTransaction(id) {
             info.html("");
             info.append(createTransactionHTML(result, -1));
         })
+        .fail(function (e) {
+            showSearchError(e);
+        })
 }
 
 function getLog(id, chaincode) {
+    hideSearchError();
+
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/chaincode/${chaincode}/id/${id}`,
         {},
         function (result) {
@@ -118,9 +176,14 @@ function getLog(id, chaincode) {
                     <td><pre>${JSON.stringify(JSON.parse(result.content), null, 2)}</pre></td>
                     </tr>`);
         })
+        .fail(function (e) {
+            showSearchError(e);
+        })
 }
 
 function getChannelInfo() {
+    hideChannelError();
+
     $.get(`/api/v1/insight/org/org1/channel/${channelID}`,
         {},
         function (result) {
@@ -146,6 +209,9 @@ function getChannelInfo() {
             for (i = 0; i < result.count; i++) {
                 select.append(`<option>${i + 1}</option>`);
             }
+        })
+        .fail(function (e) {
+            showChannelError(e);
         })
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/chaincodes`,
         {},
