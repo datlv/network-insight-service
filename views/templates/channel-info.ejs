@@ -33,7 +33,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
-                        <label>View Block</label>
+                        <h3>View Block</h3>
                         <select id="select-block-number" class="form-control">
                             <option disabled selected value> -- select a number -- </option>
                         </select>
@@ -76,20 +76,33 @@
                         <th>Previous Block Hash</th>
                         <td>${result.header.previous_hash}</td>
                         </tr>`);
+                var i = 1;
+                for (let data of result.transactions) {
+                    var tb = `<tr><th>Transaction ${i++}</th><td><div><table class="table table-bordered table-striped" style="margin-bottom:0px;">`;
+                    tb += `<tr><th>Transaction ID</th><td>${data.tx_id}</td></tr>`;
+                    tb += `<tr><th>Time</th><td>${data.time}</td></tr>`;
+                    tb += `<tr><th>Type</th><td>${data.type}</td></tr>`;
+                    tb += `<tr><th>Channel</th><td>${data.channel}</td></tr>`;
 
-                var i;
-                for (i = 0; i < result.data.data.length; i++) {
-                    let data = result.data.data[i];
-                    let time = data.payload.header.channel_header.timestamp;
-                    let txID = data.payload.header.channel_header.tx_id;
-                    info.append(`<tr>
-                        <th>Transaction ${i + 1}</th>
-                        <td>
-                            <div>${time}</div>
-                            <div>${txID}</div>
-                        </td>
-                        </tr>`);
+                    var j = 1;
+                    for (let action of data.actions) {
+                        var tbAction = `<tr><th>Action ${j++}</th><td><div><table class="table table-bordered table-striped" style="margin-bottom:0px;">`;
+                        tbAction += `<tr><th>Creator</th><td>${action.creator.name}</td></tr>`;
+                        tbAction += `<tr><th>Creator Certificate</th><td>${action.creator.cert}</td></tr>`;
+                        tbAction += `<tr><th>Chaincode Name</th><td>${action.chaincode}</td></tr>`;
+                        tbAction += `<tr><th>Chaincode Version</th><td>${action.chaincode_input}</td></tr>`;
+                        tbAction += `<tr><th>Chaincode Input</th><td>${action.chaincode_version}</td></tr>`;
+                        tbAction += `<tr><th>Endorsers</th><td>${action.endorsers}</td></tr>`;
+                        tbAction += `<tr><th>Proposal Response Status</th><td>${action.proposal_response.status}</td></tr>`;
+                        tbAction += `<tr><th>Read-Write Sets</th><td><pre style="max-width:600px">${JSON.stringify(action.proposal_response.rw_set, null, 2)}</pre></td></tr>`;
+                        tbAction += `</table></div></td></tr>`;
+                        tb += tbAction;
+                    }
+
+                    tb += `</table></div></td></tr>`;
+                    info.append(tb);
                 }
+
             })
     }
 

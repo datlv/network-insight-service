@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const convertObject = require('../utils/convertObject');
 
 var Client = require('fabric-client');
 var client = Client.loadFromConfig('configs/fabric-network-config/connection-profile.yaml');
@@ -97,7 +98,7 @@ router.route('/org/:org/channel/:channel_name/block/:block')
             .then((channel) => {
                 return channel.queryBlock(block)
                     .then(queryResponses => {
-                        return res.json(queryResponses);
+                        return res.json(convertObject.convertBlock2JSON(queryResponses));
                     }).catch(err => {
                         if (err) return next(err);
                     });
