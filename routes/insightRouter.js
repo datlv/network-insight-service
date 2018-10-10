@@ -133,6 +133,36 @@ function submitTransaction(requestData, channel) {
 
         });
 }
+// ======================================================
+
+function query(channel, requestData) {
+    return channel.queryByChaincode(requestData)
+        .then((response_payloads) => {
+            if (response_payloads && response_payloads.length > 0) {
+                if (!response_payloads[0].code) {
+                    try {
+                        let resultData = JSON.parse(response_payloads[0].toString('utf8'));
+                        return Promise.resolve(resultData);
+                    }
+                    catch (e) {
+                        console.log('JSON.parse() failed with execption: ' + e);
+                        return Promise.reject(new Error('JSON.parse() failed with execption: ' + e));
+                    }
+                }
+                else {
+                    return Promise.reject(new Error(response_payloads[0]));
+                }
+            }
+            else {
+                console.log('response_payloads is null');
+                return Promise.reject(new Error('response_payloads is null'))
+            }
+        },
+            (err) => {
+                console.log('Failed to send query due to error: ' + err.stack ? err.stack : err);
+                return Promise.reject(new Error(('Failed to send query due to error: ' + err.stack ? err.stack : err)));
+            });;
+}
 
 var router = express.Router();
 router.use(bodyParser.json());
@@ -298,34 +328,8 @@ router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/id/:id')
                     fcn: 'getObject',
                     args: [id, 'log']
                 };
-                return channel.queryByChaincode(requestData)
-                    .then((response_payloads) => {
-                        if (response_payloads && response_payloads.length > 0) {
-                            if (!response_payloads[0].code) {
-                                try {
-                                    let resultData = JSON.parse(response_payloads[0].toString('utf8'));
-                                    return Promise.resolve(resultData);
-                                }
-                                catch (e) {
-                                    console.log('JSON.parse() failed with execption: ' + e);
-                                    return Promise.reject(new Error('JSON.parse() failed with execption: ' + e));
-                                }
-                            }
-                            else {
-                                return Promise.reject(new Error(response_payloads[0]));
-                            }
-                        }
-                        else {
-                            console.log('response_payloads is null');
-                            return Promise.reject(new Error('response_payloads is null'))
-                        }
-                    },
-                        (err) => {
-                            console.log('Failed to send query due to error: ' + err.stack ? err.stack : err);
-                            return Promise.reject(new Error(('Failed to send query due to error: ' + err.stack ? err.stack : err)));
-                        });;
-            })
-            .then(data => {
+                return query(channel, requestData)
+            }).then(data => {
                 if (!data) {
                     res.writeHead(404, {
                         'Content-Type': 'text/plain'
@@ -349,7 +353,12 @@ router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/query')
         let chaincode = req.params.chaincode;
         let data = req.body;
         let fcn = data.fcn;
-        let obj = JSON.stringify(data.obj);
+        var obj = '';
+        if (typeof data.obj === 'string' || data.obj instanceof String) {
+            obj = data.obj;
+        } else {
+            obj = JSON.stringify(data.obj);
+        }
 
         return encroll(org)
             .then(() => {
@@ -361,32 +370,7 @@ router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/query')
                     fcn: fcn,
                     args: [obj]
                 };
-                return channel.queryByChaincode(requestData)
-                    .then((response_payloads) => {
-                        if (response_payloads && response_payloads.length > 0) {
-                            if (!response_payloads[0].code) {
-                                try {
-                                    let resultData = JSON.parse(response_payloads[0].toString('utf8'));
-                                    return Promise.resolve(resultData);
-                                }
-                                catch (e) {
-                                    console.log('JSON.parse() failed with execption: ' + e);
-                                    return Promise.reject(new Error('JSON.parse() failed with execption: ' + e));
-                                }
-                            }
-                            else {
-                                return Promise.reject(new Error(response_payloads[0]));
-                            }
-                        }
-                        else {
-                            console.log('response_payloads is null');
-                            return Promise.reject(new Error('response_payloads is null'))
-                        }
-                    },
-                        (err) => {
-                            console.log('Failed to send query due to error: ' + err.stack ? err.stack : err);
-                            return Promise.reject(new Error(('Failed to send query due to error: ' + err.stack ? err.stack : err)));
-                        });;
+                return query(channel, requestData)
             })
             .then(data => {
                 if (!data) {
