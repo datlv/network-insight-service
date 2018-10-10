@@ -342,12 +342,75 @@ router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/id/:id')
     });
 // ======================================================
 
+router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/query')
+    .post(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        let chaincode = req.params.chaincode;
+        let data = req.body;
+        let fcn = data.fcn;
+        let obj = JSON.stringify(data.obj);
+
+        return encroll(org)
+            .then(() => {
+                return client.getChannel(channel_name);
+            })
+            .then((channel) => {
+                let requestData = {
+                    chaincodeId: chaincode,
+                    fcn: fcn,
+                    args: [obj]
+                };
+                return channel.queryByChaincode(requestData)
+                    .then((response_payloads) => {
+                        if (response_payloads && response_payloads.length > 0) {
+                            if (!response_payloads[0].code) {
+                                try {
+                                    let resultData = JSON.parse(response_payloads[0].toString('utf8'));
+                                    return Promise.resolve(resultData);
+                                }
+                                catch (e) {
+                                    console.log('JSON.parse() failed with execption: ' + e);
+                                    return Promise.reject(new Error('JSON.parse() failed with execption: ' + e));
+                                }
+                            }
+                            else {
+                                return Promise.reject(new Error(response_payloads[0]));
+                            }
+                        }
+                        else {
+                            console.log('response_payloads is null');
+                            return Promise.reject(new Error('response_payloads is null'))
+                        }
+                    },
+                        (err) => {
+                            console.log('Failed to send query due to error: ' + err.stack ? err.stack : err);
+                            return Promise.reject(new Error(('Failed to send query due to error: ' + err.stack ? err.stack : err)));
+                        });;
+            })
+            .then(data => {
+                if (!data) {
+                    res.writeHead(404, {
+                        'Content-Type': 'text/plain'
+                    });
+                    res.end('Query failed');
+                }
+                else {
+                    res.json(data);
+                }
+            })
+            .catch(err => {
+                if (err) return next(err);
+            });
+    });
+// ======================================================
+
 router.route('/org/:org/channel/:channel_name/chaincode/:chaincode')
     .post(function (req, res, next) {
         let org = req.params.org;
         let channel_name = req.params.channel_name;
         let chaincode = req.params.chaincode;
-        data = req.body;
+        let data = req.body;
         let fcn = data.fcn;
         let obj = data.obj;
 
