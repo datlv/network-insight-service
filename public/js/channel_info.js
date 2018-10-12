@@ -10,6 +10,11 @@ $(document).ready(function () {
     $('#select-search-type').on('change', function () {
         searchTypeChanged(this.value);
     });
+
+    if (txid) {
+        $('#text-object-search').val(txid);
+        getTransaction(txid);
+    }
 });
 
 function getErrorMessage(error) {

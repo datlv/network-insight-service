@@ -6,9 +6,11 @@ router.get('/', function (req, res, next) {
   res.render('templates/index', {});
 });
 
-router.get('/channel-info/:channelID', function (req, res, next) {
+router.get('/channel/:channelID', function (req, res, next) {
   let channelID = req.params.channelID;
-  res.render('templates/channel-info', { channelID: channelID });
+  let chaincode = req.query.chaincode;
+  let txid = req.query.txid;
+  res.render('templates/channel-info', { channelID: channelID, chaincode: chaincode, txid: txid });
 });
 
 module.exports = router;
