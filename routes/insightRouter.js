@@ -163,9 +163,12 @@ function query(channel, requestData) {
                 return Promise.reject(new Error(('Failed to send query due to error: ' + err.stack ? err.stack : err)));
             });;
 }
+// ======================================================
 
 var router = express.Router();
 router.use(bodyParser.json());
+
+// ======================================================
 
 router.route('/org/:org')
     .get(function (req, res, next) {
@@ -383,47 +386,47 @@ router.route('/org/:org/channel/:channel_name/chaincode/:chaincode/query')
     });
 // ======================================================
 
-// router.route('/org/:org/channel/:channel_name/chaincode/:chaincode')
-//     .post(function (req, res, next) {
-//         let org = req.params.org;
-//         let channel_name = req.params.channel_name;
-//         let chaincode = req.params.chaincode;
-//         let data = req.body;
-//         let fcn = data.fcn;
-//         let obj = data.obj;
+router.route('/org/:org/channel/:channel_name/chaincode/:chaincode')
+    .post(function (req, res, next) {
+        let org = req.params.org;
+        let channel_name = req.params.channel_name;
+        let chaincode = req.params.chaincode;
+        let data = req.body;
+        let fcn = data.fcn;
+        let obj = data.obj;
 
-//         if (obj.content) {
-//             obj.content = JSON.stringify(obj.content);
-//         }
+        if (obj.content) {
+            obj.content = JSON.stringify(obj.content);
+        }
 
-//         return encroll(org)
-//             .then(() => {
-//                 let dataAsBytes = new Buffer(JSON.stringify(obj));
-//                 let tx_id = client.newTransactionID();
-//                 let requestData = {
-//                     chaincodeId: chaincode,
-//                     fcn: fcn,
-//                     args: [dataAsBytes],
-//                     txId: tx_id
-//                 };
-//                 return requestData;
-//             })
-//             .then((requestData) => {
-//                 // client.loadFromConfig('configs/fabric-network-config/connection-profile.yaml');
-//                 let channel = client.getChannel(channel_name);
-//                 return submitTransaction(requestData, channel)
-//             })
-//             .then(status => {
-//                 if (status == "SUCCESS") {
-//                     res.writeHead(200, {
-//                         'Content-Type': 'text/plain'
-//                     });
-//                     res.end('Added the object : ' + obj.id);
-//                 }
-//             }).catch(err => {
-//                 if (err) return next(err);
-//             });
-//     });
+        return encroll(org)
+            .then(() => {
+                let dataAsBytes = new Buffer(JSON.stringify(obj));
+                let tx_id = client.newTransactionID();
+                let requestData = {
+                    chaincodeId: chaincode,
+                    fcn: fcn,
+                    args: [dataAsBytes],
+                    txId: tx_id
+                };
+                return requestData;
+            })
+            .then((requestData) => {
+                // client.loadFromConfig('configs/fabric-network-config/connection-profile.yaml');
+                let channel = client.getChannel(channel_name);
+                return submitTransaction(requestData, channel)
+            })
+            .then(status => {
+                if (status == "SUCCESS") {
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    });
+                    res.end('Added the object : ' + obj.id);
+                }
+            }).catch(err => {
+                if (err) return next(err);
+            });
+    });
 // ======================================================
 
 module.exports = router;
