@@ -194,13 +194,7 @@ router.route('/org/:org/channel/:channel_name')
             .then((channel) => {
                 return channel.queryInfo()
                     .then(queryResponses => {
-
-                        let jsonResponse = {
-                            count: queryResponses.height.low,
-                            currentBlockHash: queryResponses.currentBlockHash.toString('hex'),
-                            previousBlockHash: queryResponses.previousBlockHash.toString('hex')
-                        }
-                        return res.json(jsonResponse);
+                        return res.json(convertObject.convertChannelInfo2JSON(queryResponses));
                     }).catch(err => {
                         if (err) return next(err);
                     });

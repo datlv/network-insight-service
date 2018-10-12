@@ -207,7 +207,7 @@ function getChannelInfo() {
             select.append(`<option disabled selected value> -- select a number -- </option>`);
             var i;
             for (i = 0; i < result.count; i++) {
-                select.append(`<option>${i + 1}</option>`);
+                select.append(`<option value='${i}'>${i + 1}</option>`);
             }
         })
         .fail(function (e) {
