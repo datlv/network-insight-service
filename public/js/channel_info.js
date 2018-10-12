@@ -12,23 +12,35 @@ $(document).ready(function () {
     });
 });
 
-function showSearchError(e) {
-    let info = $('#error-div');
-    info.html('');
-
+function getErrorMessage(error) {
     const messageRe = /(message:.*\)<)/;
-    var message = '';
-    if (messageRe.test(e.responseText)) {
-        let m = e.responseText.match(messageRe);
+    const headerRe = /(<h1>(.|\n)*?<\/h1>)/;
+
+    if (messageRe.test(error)) {
+        let m = error.match(messageRe);
         if (m.length > 0) {
-            message = m[0].split(")<")[0];
-            message = message.split("message:")[1];
-            info.append(`<strong>${message}</strong>`);
+            var temp = m[0].split(")<")[0];
+            temp = temp.split("message:")[1];
+            return `<strong>${temp}</strong>`;
+        }
+    } else if (headerRe.test(error)) {
+        let m = error.match(headerRe);
+        if (m.length > 0) {
+            var temp = m[0].split("</h1>")[0];
+            temp = temp.split("<h1>")[1];
+            return `<strong>${temp}</strong>`;
         }
     }
-    if (message === '') {
-        info.append(e.responseText);
-    }
+
+    return error
+}
+
+function showSearchError(e) {
+    $('#search-info-container').hide();
+    $('#object-info-container').hide();
+    let info = $('#error-div');
+    info.html('');
+    info.append(getErrorMessage(e.responseText));
     info.show();
 }
 
@@ -40,26 +52,26 @@ function hideSearchError() {
 function showChannelError(e) {
     let info = $('#error-channel-div');
     info.html('');
-
-    const messageRe = /(<h1>(.|\n)*?<\/h1>)/;
-    var message = '';
-    if (messageRe.test(e.responseText)) {
-        let m = e.responseText.match(messageRe);
-        if (m.length > 0) {
-            message = m[0].split("</h1>")[0];
-            message = message.split("<h1>")[1];
-            info.append(`<strong>${message}</strong>`);
-        }
-    }
-    if (message === '') {
-        info.append(e.responseText);
-    }
+    info.append(getErrorMessage(e.responseText));
     info.show();
 }
 
 function hideChannelError() {
     $('#error-channel-div').html('');
     $('#error-channel-div').hide();
+}
+
+function showBlockError(e) {
+    $('#block-info-container').hide();
+    let info = $('#block-error-div');
+    info.html('');
+    info.append(getErrorMessage(e.responseText));
+    info.show();
+}
+
+function hideBlockError() {
+    $('#block-error-div').html('');
+    $('#block-error-div').hide();
 }
 
 function createTransactionHTML(transaction, index) {
@@ -95,9 +107,14 @@ function createTransactionHTML(transaction, index) {
 }
 
 function getBlockInfo(num) {
+    hideBlockError();
+
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/block/${num}`,
         {},
         function (result) {
+            let container = $('#block-info-container');
+            container.show();
+
             var info = $('#block-info');
             info.html("");
             info.append(`<tr>
@@ -113,6 +130,9 @@ function getBlockInfo(num) {
                 info.append(createTransactionHTML(data, i++));
             }
         })
+        .fail(function (e) {
+            showBlockError(e);
+        })
 }
 
 function getTransaction(id) {
@@ -121,8 +141,10 @@ function getTransaction(id) {
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/tx/${id}`,
         {},
         function (result) {
+            let container = $('#search-info-container');
+            container.show();
+
             var info = $('#search-info');
-            $("#search-info-container").css("margin-top", "20px");
             info.html("");
             info.append(createTransactionHTML(result, -1));
         })
@@ -137,6 +159,9 @@ function getLog(id, chaincode) {
     $.get(`/api/v1/insight/org/org1/channel/${channelID}/chaincode/${chaincode}/id/${id}`,
         {},
         function (result) {
+            let container = $('#object-info-container');
+            container.show();
+
             var info = $('#object-info');
             info.html("");
             info.append(`<tr>
